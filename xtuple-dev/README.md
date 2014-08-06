@@ -1,4 +1,4 @@
-## Creating a Vagrant Virtual Development Environment ##
+## Creating a Vagrant Virtual Development Environment For Qt AND Mobile Development##
 
 [Vagrant](http://docs.vagrantup.com/v2/why-vagrant/index.html) is open-source software used to create lightweight and portable virtual development environments. Vagrant works like a "wrapper" for VirtualBox that can create, configure, and destroy virtual machines with the use of its own terminal commands. Vagrant facilitates the setup of environments without any direct interaction with VirtualBox and allows developers to use preferred editors and browsers in their native operating system. [This blog](http://mitchellh.com/the-tao-of-vagrant) describes a typical workflow using Vagrant in a development environment.
 
@@ -14,7 +14,7 @@ please use [these instructions](../../wiki/Creating-a-Vagrant-Virtual-Environmen
 - Download and install [Vagrant 1.6.3](http://www.vagrantup.com/download-archive/v1.6.3.html)
   - Package managers like apt-get and gem install will install an older version of Vagrant so it is required to use the download page.
 
-[Fork](http://github.com/xtuple/xtuple/fork) the `xtuple`, [fork](http://github.com/xtuple/xtuple-extensions/fork)  `xtuple-extensions`, and [fork](http://github.com/xtuple/xtuple-vagrant/fork) `xtuple-vagrant` repositories on Github.
+[Fork](http://github.com/xtuple/xtuple/fork) the `xtuple`, [fork](http://github.com/xtuple/xtuple-extensions/fork)  `xtuple-extensions`, [fork](http://github.com/xtuple/qt-client/fork), and [fork](http://github.com/xtuple/xtuple-vagrant/fork) `xtuple-vagrant` repositories on Github.
 
 Clone your forks of the `xtuple` and `xtuple-extensions` repositories to a directory on your host machine:
 
@@ -22,6 +22,7 @@ Clone your forks of the `xtuple` and `xtuple-extensions` repositories to a direc
     host $ cd dev
     host $ git clone --recursive https://github.com/<your-github-username-here>/xtuple.git
     host $ git clone --recursive https://github.com/<your-github-username-here>/xtuple-extensions.git
+    host $ git clone --recursive https://github.com/<your-github-username-here>/qt-client.git
 
 Clone your fork of the `xtuple-vagrant` repository in a separate directory adjacent to your development folder:
 
@@ -46,9 +47,10 @@ Clone your fork of the `xtuple-vagrant` repository in a separate directory adjac
 
 Start the virtual machine:
 
+    host $ cd /path/to/xtuple-vagrant/xtuple-dev/
     host $ vagrant up
 
-- Vagrant will automatically run a shell script to install git and the xTuple development environment
+- Vagrant will automatically run a shell script to install git and the xTuple development environment(with added Qt dev environment expect this step to take a WHILE) Est ~1-2 Hours depending on internet speed.
 
 Connect to the virtual machine via ssh:
 
@@ -67,7 +69,50 @@ Launch your local browser and navigate to application using localhost `http://lo
 
 Default username and password to your local application are `admin`
 
-### xTuple Desktop Client ###
+### xTuple Desktop Development###
+
+-From within vagrant edit your ~/.bashrc file:
+
+    vagrant $ cd ~
+    vagrant $ edit ./.bashrc
+    vagrant $ add "export PATH=/usr/local/Trolltech/Qt-4.8.6/bin:$PATH" to the end of the file
+    vagrant $ exit
+
+-Enable GUI for debugging/running xTuple desktop application:
+
+    host $ cd /path/to/xtuple-vagrant/xtuple-dev
+    host $ edit Vagrantfile
+    host $ change "#v.gui = true" to "v.gui = true"
+
+-Reload your virtual machine:
+
+    host $ cd /xtuple-vagrant/xtuple-dev
+    host $ vagrant halt
+    host $ vagrant reload
+
+-You should now see a GUI pop-up, dont worry if you don't want to edit inside of that GUI you can still use 'vagrant ssh' or edit the files on the host. To begin working with the Qt environment compile the application:
+
+    host $ cd /xtuple-vagrant/xtuple-dev
+    host $ vagrant ssh
+    vagrant $ cd ~/dev/qt-client
+    vagrant $ qmake
+    vagrant $ make
+
+-Compiling the application will take around an hour depending on the resources allotted in your VagrantFile, after it is finished you can launch it in two ways.
+
+    vagrant $ cd ~/dev/qt-client/bin
+    vagrant $ ./xtuple
+
+-If you prefer to use the GUI navigate to the ~/dev/qt-client/bin directory and double-click to launch the compiled xTuple application.
+
+-When you make changes and would like to test, repeat the make step above and launch the client, editing the files from wherever you choose when connecting from your compiled application you will need to connect using these credentials:
+  * Username: `admin`
+  * Password: `admin`
+  * Server : `localhost`
+  * Port: `5432`
+  * Database: `demo`
+
+### xTuple Desktop Client###
 
 - Obtain the [xTuple Desktop Client Installer](https://sourceforge.net/projects/postbooks/files/latest/download?source=dlp) for your platform. To be sure the PostBooks Desktop Client version matches the PostBooks database version you are installing, look at the "About" information in the Mobile client.
 
