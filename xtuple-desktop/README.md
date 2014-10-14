@@ -5,9 +5,9 @@
 New to Github? Learn more about basic Github activities [here](https://help.github.com/categories/54/articles).
 
 Note: This document is for setting up a virtual environment on a Unix host. If you are using a Windows host,
-please use [these instructions](../../wiki/Creating-a-Vagrant-Virtual-Environment-on-a-Windows-Host).
+please use [these instructions](https://github.com/xtuple/xtuple-vagrant/wiki/Creating-a-Vagrant-Virtual-Development-Environment-For-Qt-AND-Mobile-Development-on-a-Windows-Host).
 
-###  Install Vagrant ###
+### Install Vagrant ###
 
 - Download and install [VirtualBox 4.3.12](https://www.virtualbox.org/wiki/Downloads)
   - Do not open VirtualBox or create a virtual machine. This will be handled by Vagrant.
@@ -32,22 +32,18 @@ Clone your fork of the `xtuple-vagrant` repository in a separate directory adjac
     host $ git clone https://github.com/<your-github-username-here>/xtuple-vagrant.git
     host $ cd xtuple-vagrant
 
-**Important**: If you have previously forked these repositories, please ensure that you [update your fork](../../../xtuple/wiki/Basic-Git-Usage#wiki-merging) and [update your dependencies](../../../xtuple/wiki/Upgrading#wiki-update-stack-dependencies).
+**Important**: If you have previously forked these repositories, please ensure that you [update your fork](../../../../xtuple/wiki/Basic-Git-Usage#wiki-merging) and [update your dependencies](../../../../xtuple/wiki/Upgrading#wiki-update-stack-dependencies).
 
 ### Setup Vagrant ###
 
 - In the `Vagrantfile`, ensure that the `sourceDir` variable to matches the location of the cloned xTuple source code: `sourceDir = "../../dev"`
   - This path should be relative to the location of the Vagrantfile
 
-### Install VirtualBox Guest Additions Plugin
-
-    host $ vagrant plugin install vagrant-vbguest
-
 ### Connect to the Virtual Machine ###
 
 Start the virtual machine:
 
-    host $ cd /path/to/xtuple-vagrant/xtuple-dev/
+    host $ cd /path/to/xtuple-vagrant/xtuple-desktop/
     host $ vagrant up
 
 - Vagrant will automatically run a shell script to install git and the xTuple development environment(with added Qt dev environment expect this step to take a WHILE) Est ~1-2 Hours depending on internet speed.
@@ -75,23 +71,24 @@ Default username and password to your local application are `admin`
 
     vagrant $ cd ~
     vagrant $ edit ./.bashrc
-    vagrant $ add "export PATH=/usr/local/Trolltech/Qt-4.8.6/bin:$PATH" to the end of the file
-    vagrant $ exit
+    vagrant $ add 2 lines: "export PATH=/usr/local/Trolltech/Qt-4.8.6/bin:$PATH" 
+    vagrant $ second:"export DYLD_LIBRARY_PATH=/home/vagrant/dev/qt-client/openrpt/lib:/home/vagrant/dev/qt-client/lib:$DYLD_LIBRARY_PATH"
+    vagrant $ to the end of the file, then exit
 
 -Enable GUI for debugging/running xTuple desktop application:
 
-    host $ cd /path/to/xtuple-vagrant/xtuple-dev
+    host $ cd /path/to/xtuple-vagrant/xtuple-desktop
     host $ edit Vagrantfile
     host $ change "#v.gui = true" to "v.gui = true"
 
 -Reload your virtual machine:
 
-    host $ cd /xtuple-vagrant/xtuple-dev
+    host $ cd /xtuple-vagrant/xtuple-desktop
     host $ vagrant reload
 
 -You should now see a GUI pop-up, dont worry if you don't want to edit inside of that GUI you can still use 'vagrant ssh' or edit the files on the host. To begin working with the Qt environment compile the application:
 
-    host $ cd /xtuple-vagrant/xtuple-dev
+    host $ cd /xtuple-vagrant/xtuple-desktop
     host $ vagrant ssh
     vagrant $ cd ~/dev/qt-client
     vagrant $ qmake
@@ -127,4 +124,4 @@ Default username and password to your local application are `admin`
 
 Shutting down, restarting, and destroying your VM:
 
-[Basic commands](../../wiki/Vagrant-Tips-and-Tricks#wiki-vagrant-commands)
+[Basic commands](https://github.com/xtuple/xtuple-vagrant/wiki/Vagrant-Tips-and-Tricks)
